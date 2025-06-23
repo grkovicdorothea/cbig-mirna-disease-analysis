@@ -4,14 +4,11 @@ import networkx as nx
 from pyvis.network import Network
 import streamlit.components.v1 as components
 
-# Google Drive file ID extracted from your link
 file_id = "1qzP5GkOzbcJB4a0SxB09XFxdOGqMT20u"
 csv_url = f"https://drive.google.com/uc?export=download&id={file_id}"
 
-# Load CSV directly from Google Drive
 df = pd.read_csv(csv_url, index_col=0)
 
-# Streamlit interface
 st.title("Disease Similarity Network")
 
 # Threshold slider
@@ -24,7 +21,7 @@ selected_diseases = st.multiselect(
     options=all_diseases
 )
 
-# Fallback: default to top N if none selected
+# Default to top N if none selected
 if not selected_diseases:
     max_nodes = st.slider("No selection made. Showing top N most connected diseases", 10, min(len(df), 100), 30)
 
@@ -43,7 +40,7 @@ G = nx.Graph()
 for disease in df_subset.index:
     G.add_node(disease)
 
-# Add edges with interactive features
+# Add edges
 for i, disease1 in enumerate(df_subset.index):
     for j, disease2 in enumerate(df_subset.columns):
         if i < j:
@@ -58,12 +55,10 @@ for i, disease1 in enumerate(df_subset.index):
                     width=edge_width
                 )
 
-# Visualize with PyVis
 net = Network(height="700px", width="100%", bgcolor="#ffffff", font_color="black")
 net.from_nx(G)
 net.repulsion(node_distance=200, central_gravity=0.3)
 
-# Save and display in Streamlit
 net.save_graph("graph.html")
 HtmlFile = open("graph.html", "r", encoding="utf-8")
 components.html(HtmlFile.read(), height=750, scrolling=True)
