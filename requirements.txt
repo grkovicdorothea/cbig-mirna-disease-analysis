@@ -4,3 +4,6 @@ networkx
 pyvis
 matplotlib
 seaborn
+numpy
+scikit-learn
+plotly
