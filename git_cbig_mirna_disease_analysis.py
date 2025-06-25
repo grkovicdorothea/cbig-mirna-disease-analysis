@@ -33,19 +33,10 @@ mesh_csv_url = f"https://drive.google.com/uc?export=download&id={mesh_file_id}"
 mapping_df = pd.read_csv(mesh_csv_url)
 id_to_names = mapping_df.groupby("disease_mesh_id")["disease_mesh_name"].apply(lambda x: list(set(", ".join(x).split(", ")))).to_dict()
 
-# Clean whitespace
-# mapping_df["disease_mesh_id"] = mapping_df["disease_mesh_id"].astype(str).str.strip()
-# mapping_df["disease_mesh_name"] = mapping_df["disease_mesh_name"].astype(str).str.strip()
-
-# Create mapping dictionary
-# id_to_names = mapping_df.groupby("disease_mesh_id")["disease_mesh_name"] \
-                        .apply(lambda x: list(set(", ".join(x).split(", ")))) \
-                        .to_dict()
-
 # Function to get display label for a MeSH ID or combined ID
-# def get_disease_label(mesh_id):
-#    names = id_to_names.get(mesh_id, ["Unknown"])
-#    return f"{mesh_id} — {', '.join(names)}"
+def get_disease_label(mesh_id):
+    names = id_to_names.get(mesh_id, ["Unknown"])
+    return f"{mesh_id} — {', '.join(names)}"
 
 
 
@@ -126,7 +117,7 @@ with tab1:
                      color_discrete_sequence=color_sequence, title=f"{Alg} Clustering", width=900, height=650)
     st.plotly_chart(fig, use_container_width=True)
 
-    # use_cluster_selection = st.checkbox("Select Disease by Cluster", value=False)
+    use_cluster_selection = st.checkbox("Select Disease by Cluster", value=False)
     cluster_sizes = df['cluster'].value_counts().to_dict()
     valid_clusters = [c for c, size in cluster_sizes.items() if size >= min_cluster_size]
 
@@ -144,7 +135,7 @@ with tab1:
     selected_cluster_label = df[df["disease"] == selected_disease]["cluster"].values[0]
     cluster_members = df[df["cluster"] == selected_cluster_label]["disease"].tolist()
 
-    st.subheader(f"Cluster Members of Selected Disease `{get_disease_label(selected_disease)}`")
+    st.subheader(f"Cluster Members of Selected Disease `{selected_disease}` (Cluster {selected_cluster_label})")
     cluster_similarities = jcmat.loc[selected_disease, cluster_members]
     st.selectbox("Cluster Members", [f"{get_disease_label(d)} (Similarity: {cluster_similarities[d]:.2f})" for d in cluster_similarities.index])
 
@@ -152,18 +143,21 @@ with tab1:
     top_similar = jcmat.loc[selected_disease].drop(selected_disease).sort_values(ascending=False).head(top_n)
     st.selectbox("Similar Diseases", [f"{get_disease_label(d)} (Similarity: {top_similar[d]:.2f})" for d in top_similar.index])
 
+    st.subheader(f"Heatmap: Internal Similarities Among Top {top_n} Similar Diseases")
     heatmap_data_2 = jcmat.loc[top_similar.index, top_similar.index]
     fig2, ax2 = plt.subplots(figsize=(10, 8))
     sns.heatmap(heatmap_data_2, cmap="viridis", annot=False, xticklabels=True, yticklabels=True, ax=ax2)
     plt.xticks(rotation=90)
     st.pyplot(fig2)
 
+    st.subheader(f"Heatmap: Similarities Within Selected Cluster (Cluster {selected_cluster_label})")
     cluster_heatmap_data = jcmat.loc[cluster_members, cluster_members]
     fig3, ax3 = plt.subplots(figsize=(10, 8))
     sns.heatmap(cluster_heatmap_data, cmap="viridis", annot=False, xticklabels=True, yticklabels=True, ax=ax3)
     plt.xticks(rotation=90)
     st.pyplot(fig3)
 
+    
     selected_cluster_for_heatmap = st.selectbox("Select Cluster to Visualize / Show Heatmap", sorted(df["cluster"].unique(), key=int))
     heatmap_cluster_data = jcmat.loc[
         df[df["cluster"] == selected_cluster_for_heatmap]["disease"],
@@ -227,7 +221,6 @@ with tab2:
     net.save_graph("graph.html")
     HtmlFile = open("graph.html", "r", encoding="utf-8")
     components.html(HtmlFile.read(), height=750, scrolling=True)
-
 # df = pd.read_csv(csv_url, index_col=0)
 
 # st.title("Disease Similarity Network")
@@ -279,6 +272,19 @@ with tab2:
 # net = Network(height="700px", width="100%", bgcolor="#ffffff", font_color="black")
 # net.from_nx(G)
 # net.repulsion(node_distance=200, central_gravity=0.3)
+
+# net.save_graph("graph.html")
+# HtmlFile = open("graph.html", "r", encoding="utf-8")
+# components.html(HtmlFile.read(), height=750, scrolling=True)
+
+
+
+
+
+
+
+
+
 
 # net.save_graph("graph.html")
 # HtmlFile = open("graph.html", "r", encoding="utf-8")
