@@ -41,7 +41,24 @@ def get_disease_label(mesh_id):
 
 
 # Create two main tabs for better organization: clustering view and network view
-tab1, tab2 = st.tabs(["Clustering View", "Similarity Network"])
+tab_intro, tab1, tab2 = st.tabs(["Introduction", "Clustering View", "Similarity Network"])
+
+# --------------
+# TAB 0: Introduction
+# --------------
+with tab_intro:
+    st.title("Jaccard Index Similarity Analysis")
+    st.write("""
+    In this analysis, we explore disease-disease relationships based on Jaccard Index similarity.
+    The Jaccard Index is a measure of how similar two sets are, commonly used for comparing feature overlaps.
+    
+    This tool allows you to:
+    - Perform clustering of diseases using various algorithms
+    - Visualize similarity-based disease networks
+    - Interactively explore similarity heatmaps and top related diseases
+    
+    Use the tabs above to switch between the clustering and network views.
+    """)
 
 # --------------
 # TAB 1: Clustering View
