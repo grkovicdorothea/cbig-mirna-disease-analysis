@@ -260,16 +260,29 @@ with tab2:
 
     net.save_graph("graph.html")
 
+        # Read the HTML and inject buttons into the #mynetwork div
     with open("graph.html", "r", encoding="utf-8") as f:
         html_content = f.read()
 
-    # Inject zoom & PNG download buttons
-        # Inject zoom & fullscreen buttons with styling
-        extra_buttons = """
+    # Insert the buttons directly into the #mynetwork div so they appear in fullscreen
+    injection_point = '<div id="mynetwork"'
+    injected_html = html_content.replace(
+        injection_point,
+        f'''
+        <div class="network-controls">
+            <button onclick="zoomIn()">Zoom In</button>
+            <button onclick="zoomOut()">Zoom Out</button>
+            <button id="fs-toggle" onclick="toggleFullscreen()">Fullscreen</button>
+            <button onclick="downloadPNG()">Download PNG</button>
+        </div>
+        {injection_point}'''
+    )
+
+    # Append JS and CSS to the bottom
+    injected_html += """
     <script>
         document.addEventListener("DOMContentLoaded", function () {
             const fsBtn = document.getElementById("fs-toggle");
-
             document.addEventListener("fullscreenchange", () => {
                 if (document.fullscreenElement) {
                     fsBtn.innerText = "Exit Fullscreen";
@@ -348,16 +361,10 @@ with tab2:
             background-color: #0056b3;
         }
     </style>
-
-    <div class="network-controls">
-        <button onclick="zoomIn()">Zoom In</button>
-        <button onclick="zoomOut()">Zoom Out</button>
-        <button id="fs-toggle" onclick="toggleFullscreen()">Fullscreen</button>
-        <button onclick="downloadPNG()">Download PNG</button>
-    </div>
     """
 
-    components.html(extra_buttons + html_content, height=780, scrolling=True)
+    # Show final component in Streamlit
+    components.html(injected_html, height=750, scrolling=True)
 
 
 # df = pd.read_csv(csv_url, index_col=0)
