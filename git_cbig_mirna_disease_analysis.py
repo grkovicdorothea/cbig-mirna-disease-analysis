@@ -131,8 +131,6 @@ with tab1:
     col1, col2 = st.columns([1, 1])
     with col1:
         use_cluster_selection = st.checkbox("Select Disease by Cluster", value=False)
-    with col2:
-        selection_mode = st.radio("Select by:", ["MeSH ID", "Disease Name"], horizontal=True)
 
     # Determine options based on cluster
     cluster_sizes = df['cluster'].value_counts().to_dict()
@@ -144,11 +142,7 @@ with tab1:
     else:
         options = diseases
 
-    # Build dropdown labels depending on toggle
-    if selection_mode == "MeSH ID":
-        display_options = {d: get_disease_label(d).split(" — ")[0] for d in options}
-    else:
-        display_options = {d: ", ".join(id_to_names.get(d, ["Unknown"])) for d in options}
+    display_options = {d: get_disease_label(d) for d in options}
 
     reversed_display = {v: k for k, v in display_options.items()}
     selected_display = st.selectbox("Select a Disease", list(reversed_display.keys()))
