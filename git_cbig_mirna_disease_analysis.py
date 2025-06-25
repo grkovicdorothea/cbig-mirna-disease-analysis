@@ -62,8 +62,13 @@ This tool enables you to:
 - Interactively explore heatmaps and identify top related diseases
 
 Use the tabs above to navigate between clustering results, similarity networks, and detailed statistics.
-
     """)
+
+    st.image(
+        "https://drive.google.com/uc?export=view&id=1YhUT2Bv_uuJ5wgT00zq8Y5ioSf6XqiMu", 
+        caption="Overview of Disease Similarity Network", 
+        use_column_width=True
+    )
 
 # --------------
 # TAB 1: Clustering View
