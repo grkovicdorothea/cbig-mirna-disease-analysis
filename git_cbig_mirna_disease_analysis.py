@@ -198,7 +198,7 @@ with tab2:
     for disease in df_subset.index:
         G.add_node(disease, label=get_disease_label(disease))
 
-for i, disease1 in enumerate(df_subset.index):
+    for i, disease1 in enumerate(df_subset.index):
         for j, disease2 in enumerate(df_subset.columns):
             if i < j:
                 weight = df_subset.loc[disease1, disease2]
@@ -210,6 +210,7 @@ for i, disease1 in enumerate(df_subset.index):
                         title=f"Similarity: {weight:.2f}",
                         width=edge_width
                     )
+
 
     net = Network(height="700px", width="100%", bgcolor="#ffffff", font_color="black")
     net.from_nx(G)
