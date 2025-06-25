@@ -12,6 +12,7 @@ import plotly.colors as pc
 import networkx as nx
 from pyvis.network import Network
 import streamlit.components.v1 as components
+import plotly.graph_objects as go
 
 file_id = "1jkQzlsEzbA6Kz6I6gNlKijdKtablx2k5"
 csv_url = f"https://drive.google.com/uc?export=download&id={file_id}"
@@ -255,18 +256,66 @@ with tab2:
                         title=f"{get_disease_label(disease1)} ↔ {get_disease_label(disease2)}\nSimilarity: {weight:.2f}",
                         width=edge_width
                     )
+    # Use a layout algorithm to get coordinates for each node
+pos = nx.spring_layout(G, seed=42)  # Optional: Set seed for reproducibility
 
+# Prepare edge coordinates and hover text
+edge_x = []
+edge_y = []
+edge_text = []
 
-    net = Network(height="700px", width="100%", bgcolor="#ffffff", font_color="black")
-    net.from_nx(G)
-    net.repulsion(node_distance=200, central_gravity=0.3)
-    for node in net.nodes:
-        node["title"] = node["label"]
-        node["label"] = node["label"]
+for edge in G.edges(data=True):
+    x0, y0 = pos[edge[0]]
+    x1, y1 = pos[edge[1]]
+    edge_x.extend([x0, x1, None])
+    edge_y.extend([y0, y1, None])
+    edge_text.append(f"{get_disease_label(edge[0])} ↔ {get_disease_label(edge[1])}<br>Similarity: {edge[2]['weight']:.2f}")
 
-    net.save_graph("graph.html")
-    HtmlFile = open("graph.html", "r", encoding="utf-8")
-    components.html(HtmlFile.read(), height=750, scrolling=True)
+edge_trace = go.Scatter(
+    x=edge_x, y=edge_y,
+    line=dict(width=1, color='#888'),
+    hoverinfo='text',
+    text=edge_text,
+    mode='lines'
+)
+
+# Prepare node coordinates and labels
+node_x = []
+node_y = []
+node_text = []
+
+for node in G.nodes():
+    x, y = pos[node]
+    node_x.append(x)
+    node_y.append(y)
+    node_text.append(get_disease_label(node))
+
+node_trace = go.Scatter(
+    x=node_x, y=node_y,
+    mode='markers+text',
+    text=node_text,
+    textposition="top center",
+    hoverinfo='text',
+    marker=dict(
+        color='lightblue',
+        size=12,
+        line=dict(width=2, color='DarkSlateGrey')
+    )
+)
+
+# Build the figure
+fig = go.Figure(data=[edge_trace, node_trace],
+                layout=go.Layout(
+                    title='Disease Similarity Network',
+                    titlefont_size=20,
+                    showlegend=False,
+                    hovermode='closest',
+                    margin=dict(b=20, l=5, r=5, t=40),
+                    xaxis=dict(showgrid=False, zeroline=False, showticklabels=False),
+                    yaxis=dict(showgrid=False, zeroline=False, showticklabels=False),
+                    height=750
+                ))
+
 # df = pd.read_csv(csv_url, index_col=0)
 
 # st.title("Disease Similarity Network")
