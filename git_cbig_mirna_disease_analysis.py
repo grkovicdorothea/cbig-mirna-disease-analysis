@@ -49,7 +49,7 @@ tab_intro, tab1, tab2 = st.tabs(["Introduction", "Clustering View", "Similarity 
 with tab_intro:
     st.title("Exploring Disease Similarity Through miRNA Profiles and Jaccard Index")
     st.write("""
-    In this analysis, we investigate disease-disease relationships based on Jaccard Index similarity, a metric commonly used to quantify the overlap between two sets. Here, the sets are defined by shared microRNAs (miRNAs) associated with each disease.
+    In this analysis, we investigate disease-disease relationships based on [Jaccard Index similarity](https://en.wikipedia.org/wiki/Jaccard_index), a metric commonly used to quantify the overlap between two sets. Here, the sets are defined by shared microRNAs (miRNAs) associated with each disease.
 
 We construct a disease similarity matrix, where each cell represents the Jaccard similarity between a pair of diseases. To explore and interpret these relationships, we apply a combination of dimensionality reduction, clustering, and network analysis techniques:
 - **Dimensionality Reduction:** We use t-SNE to project the high-dimensional similarity space into two dimensions, preserving the local structure for visualization.
