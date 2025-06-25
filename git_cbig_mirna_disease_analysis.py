@@ -205,7 +205,7 @@ search_text = st.text_input("Filter diseases by keyword (e.g., lymphoma, cancer,
 filtered_options = [lbl for lbl in all_labeled_diseases if search_text.lower() in lbl.lower()]
 selected_display_labels = st.multiselect("Select diseases to include", options=filtered_options)
 
-    G = nx.Graph()
+G = nx.Graph()
     for disease in df_subset.index:
         G.add_node(disease, label=get_disease_label(disease))
 
