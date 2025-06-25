@@ -247,7 +247,7 @@ with tab2:
                     G.add_edge(
                         disease1, disease2,
                         weight=weight,
-                        title=f"Similarity: {weight:.2f}",
+                        title=f"{get_disease_label(disease1)} ↔ {get_disease_label(disease2)}<br>Similarity: {weight:.2f}",
                         width=edge_width
                     )
 
