@@ -51,13 +51,20 @@ with tab_intro:
     st.write("""
     In this analysis, we explore disease-disease relationships based on Jaccard Index similarity.
     The Jaccard Index is a measure of how similar two sets are, commonly used for comparing feature overlaps.
-    
+
+    We work with a disease similarity matrix, where each value represents the Jaccard similarity between two diseases, derived from shared miRNAs.
+    To analyze these relationships, we use:
+    - Dimensionality Reduction: t-SNE helps us map high-dimensional similarity data to 2D space, preserving local structure.
+    - Clustering Algorithms: We use several clustering methods like KMeans, Birch, Hierarchical Clustering, Gaussian Mixture Models, etc., to discover groups of related diseases. Then we created heatmaps of similarity within selected groups.
+    - Network Theory: We construct similarity networks where nodes represent diseases and edges represent strong similarity scores. This reveals hubs and communities.
+
     This tool allows you to:
     - Perform clustering of diseases using various algorithms
     - Visualize similarity-based disease networks
     - Interactively explore similarity heatmaps and top related diseases
     
     Use the tabs above to switch between the clustering and network views.
+
     """)
 
 # --------------
