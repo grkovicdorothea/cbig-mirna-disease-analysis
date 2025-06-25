@@ -263,40 +263,67 @@ with tab2:
     with open("graph.html", "r", encoding="utf-8") as f:
         html_content = f.read()
 
-    # Inject zoom & PNG download buttons  
+    # Inject zoom & PNG download buttons
+        # Inject zoom & fullscreen buttons with styling
     extra_buttons = """
-    <div style="position: fixed; top: 10px; left: 10px; z-index: 9999;">
-        <button onclick="zoomIn()">+</button>
-        <button onclick="zoomOut()">-</button>
-        <button onclick="downloadPNG()">Download PNG</button>
-    </div>
     <script>
-    let scale = 1.0;
-    function zoomIn() {
-        scale += 0.1;
-        document.getElementById('mynetwork').style.transform = 'scale(' + scale + ')';
-        document.getElementById('mynetwork').style.transformOrigin = '0 0';
-    }
-    function zoomOut() {
-        scale = Math.max(0.1, scale - 0.1);
-        document.getElementById('mynetwork').style.transform = 'scale(' + scale + ')';
-        document.getElementById('mynetwork').style.transformOrigin = '0 0';
-    }
-    function downloadPNG() {
-        var networkContainer = document.getElementById("mynetwork").children[0];
-        html2canvas(networkContainer).then(function(canvas) {
-            var link = document.createElement("a");
-            link.download = "disease_similarity_network.png";
-            link.href = canvas.toDataURL();
-            link.click();
-        });
-    }
-    </script>
-    <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
-    """
-    html_content = html_content.replace("</body>", extra_buttons + "</body>")
+        function zoomIn() {
+            const network = window.network;
+            if (network) {
+                const scale = network.getScale();
+                network.moveTo({ scale: scale * 1.2 });
+            }
+        }
 
-    components.html(html_content, height=750, scrolling=True)
+        function zoomOut() {
+            const network = window.network;
+            if (network) {
+                const scale = network.getScale();
+                network.moveTo({ scale: scale / 1.2 });
+            }
+        }
+
+        function toggleFullscreen() {
+            var el = document.getElementById("mynetwork");
+            if (!document.fullscreenElement) {
+                el.requestFullscreen().catch(err => {
+                    alert(`Error attempting to enable fullscreen: ${err.message}`);
+                });
+            } else {
+                document.exitFullscreen();
+            }
+        }
+    </script>
+
+    <style>
+        button {
+            margin-right: 6px;
+            font-size: 14px;
+            padding: 6px 12px;
+            border-radius: 6px;
+            border: 1.5px solid white;
+            background-color: #007bff;
+            color: white;
+            font-weight: 500;
+            cursor: pointer;
+            box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);
+            transition: background-color 0.2s ease;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+
+    <div style="margin: 12px 0;">
+        <button onclick="zoomIn()">Zoom In</button>
+        <button onclick="zoomOut()">Zoom Out</button>
+        <button onclick="toggleFullscreen()">Fullscreen</button>
+    </div>
+    """
+
+    components.html(extra_buttons + html_content, height=780, scrolling=True)
+
 
 # df = pd.read_csv(csv_url, index_col=0)
 
