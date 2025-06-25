@@ -57,9 +57,9 @@ We construct a disease similarity matrix, where each cell represents the Jaccard
 - **[Network Theory](https://en.wikipedia.org/wiki/Network_theory):** We build an interactive [similarity network](https://en.wikipedia.org/wiki/Similarity_network) where nodes represent diseases and edges denote similarity scores.
 
 This tool enables you to:
-- Perform clustering of diseases using multiple algorithms  
-- Visualise miRNA-based disease similarity networks  
+- Perform clustering of diseases using multiple algorithms
 - Interactively explore heatmaps and identify top related diseases
+- Visualise miRNA-based disease similarity networks
 
 Use the tabs above to navigate between clustering results, similarity networks, and detailed statistics.
 """, unsafe_allow_html=True)
