@@ -206,8 +206,8 @@ filtered_options = [lbl for lbl in all_labeled_diseases if search_text.lower() i
 selected_display_labels = st.multiselect("Select diseases to include", options=filtered_options)
 
 G = nx.Graph()
-    for disease in df_subset.index:
-        G.add_node(disease, label=get_disease_label(disease))
+for disease in df_subset.index:
+    G.add_node(disease, label=get_disease_label(disease))
 
     for i, disease1 in enumerate(df_subset.index):
         for j, disease2 in enumerate(df_subset.columns):
