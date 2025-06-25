@@ -263,7 +263,7 @@ with tab2:
     with open("graph.html", "r", encoding="utf-8") as f:
         html_content = f.read()
 
-    # Inject zoom & PNG download buttons
+    # Inject zoom & PNG download buttons  
     extra_buttons = """
     <div style="position: fixed; top: 10px; left: 10px; z-index: 9999;">
         <button onclick="zoomIn()">+</button>
