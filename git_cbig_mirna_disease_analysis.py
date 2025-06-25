@@ -205,28 +205,18 @@ with tab2:
     for disease in df_subset.index:
         G.add_node(disease, label=get_disease_label(disease))
 
-# First, find the min and max similarity values above threshold (used for scaling)
-valid_weights = df_subset.values[np.triu_indices_from(df_subset.values, k=1)]
-valid_weights = valid_weights[valid_weights >= threshold]
-min_sim = valid_weights.min()
-max_sim = valid_weights.max()
-
-# Then build the graph with rescaled edge widths
 for i, disease1 in enumerate(df_subset.index):
-    for j, disease2 in enumerate(df_subset.columns):
-        if i < j:
-            weight = df_subset.loc[disease1, disease2]
-            if weight >= threshold:
-                # Normalize the weight to 0–1 scale
-                scaled_weight = (weight - min_sim) / (max_sim - min_sim + 1e-6)
-                edge_width = 1 + scaled_weight * 19  # Width between 1 and 20
-
-                G.add_edge(
-                    disease1, disease2,
-                    weight=weight,
-                    title=f"Similarity: {weight:.2f}",
-                    width=edge_width
-                )
+        for j, disease2 in enumerate(df_subset.columns):
+            if i < j:
+                weight = df_subset.loc[disease1, disease2]
+                if weight >= threshold:
+                    edge_width = (weight ** 3) * 9000000
+                    G.add_edge(
+                        disease1, disease2,
+                        weight=weight,
+                        title=f"Similarity: {weight:.2f}",
+                        width=edge_width
+                    )
 
     net = Network(height="700px", width="100%", bgcolor="#ffffff", font_color="black")
     net.from_nx(G)
