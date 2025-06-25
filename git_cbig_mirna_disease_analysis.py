@@ -157,7 +157,7 @@ with tab1:
     st.selectbox("Cluster Members", [f"{get_disease_label(d)} (Similarity: {cluster_similarities[d]:.2f})" for d in cluster_similarities.index])
 
     st.subheader(f"Top {top_n} Similar Diseases to `{get_disease_label(selected_disease)}`")
-    nonzero_similarities = jcmat.loc[selected_disease][jcmat.loc[selected_disease] > 0.5]
+    nonzero_similarities = jcmat.loc[selected_disease][jcmat.loc[selected_disease] > 0]
     top_similar = nonzero_similarities.sort_values(ascending=False).head(top_n)
     if len(nonzero_similarities) < top_n:
         st.warning(f"Only {len(nonzero_similarities)} diseases found with non-zero similarity to the selected disease.")
