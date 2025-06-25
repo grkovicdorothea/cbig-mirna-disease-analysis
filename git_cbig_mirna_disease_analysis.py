@@ -42,9 +42,9 @@ id_to_names = mapping_df.groupby("disease_mesh_id")["disease_mesh_name"] \
                         .to_dict()
 
 # Function to get display label for a MeSH ID or combined ID
-def get_disease_label(mesh_id):
-    names = id_to_names.get(mesh_id, ["Unknown"])
-    return f"{mesh_id} — {', '.join(names)}"
+# def get_disease_label(mesh_id):
+#    names = id_to_names.get(mesh_id, ["Unknown"])
+#    return f"{mesh_id} — {', '.join(names)}"
 
 
 
