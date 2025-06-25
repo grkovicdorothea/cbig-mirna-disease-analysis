@@ -126,7 +126,7 @@ with tab1:
                      color_discrete_sequence=color_sequence, title=f"{Alg} Clustering", width=900, height=650)
     st.plotly_chart(fig, use_container_width=True)
 
-    use_cluster_selection = st.checkbox("Select Disease by Cluster", value=False)
+    # use_cluster_selection = st.checkbox("Select Disease by Cluster", value=False)
     cluster_sizes = df['cluster'].value_counts().to_dict()
     valid_clusters = [c for c, size in cluster_sizes.items() if size >= min_cluster_size]
 
