@@ -201,34 +201,31 @@ with tab2:
     all_labeled_diseases = [get_disease_label(d) for d in diseases]
     label_to_disease = {get_disease_label(d): d for d in diseases}
     
-    # 1. Keyword-based automatic selection
-    # Auto keyword match and selection
-    
     st.markdown("#### Filter Diseases by Keyword")
     search_text = st.text_input("Type a keyword (e.g., lymphoma, cancer)")
 
-# Automatically select all matching diseases
+    # Automatically select all matching diseases
     if search_text:
         selected_display_labels = [lbl for lbl in all_labeled_diseases if search_text.lower() in lbl.lower()]
         st.success(f"Found {len(selected_display_labels)} diseases matching '{search_text}'")
     else:
         selected_display_labels = []
 
-# Add manual selection box
-manual_selection = st.multiselect("Or manually select diseases to include", options=all_labeled_diseases)
+    # Add manual selection box
+    manual_selection = st.multiselect("Or manually select diseases to include", options=all_labeled_diseases)
 
-# Combine automatic and manual selections
-selected_display_labels = list(set(selected_display_labels + manual_selection))
+    # Combine automatic and manual selections
+    selected_display_labels = list(set(selected_display_labels + manual_selection))
 
-# Proceed based on whether anything is selected
-if not selected_display_labels:
-    max_nodes = st.slider("No selection made. Showing top N most connected diseases", 10, min(len(jcmat), 100), 30)
-    total_similarity = jcmat.sum(axis=1)
-    top_diseases = total_similarity.sort_values(ascending=False).head(max_nodes).index
-    df_subset = jcmat.loc[top_diseases, top_diseases]
-else:
-    selected_ids = [label_to_disease[lbl] for lbl in selected_display_labels]
-    df_subset = jcmat.loc[selected_ids, selected_ids]
+    # Proceed based on whether anything is selected
+    if not selected_display_labels:
+        max_nodes = st.slider("No selection made. Showing top N most connected diseases", 10, min(len(jcmat), 100), 30)
+        total_similarity = jcmat.sum(axis=1)
+        top_diseases = total_similarity.sort_values(ascending=False).head(max_nodes).index
+        df_subset = jcmat.loc[top_diseases, top_diseases]
+    else:
+        selected_ids = [label_to_disease[lbl] for lbl in selected_display_labels]
+        df_subset = jcmat.loc[selected_ids, selected_ids]
 
 
     G = nx.Graph()
