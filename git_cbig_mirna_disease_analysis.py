@@ -306,15 +306,14 @@ node_trace = go.Scatter(
 # Build the figure
 fig = go.Figure(data=[edge_trace, node_trace],
                 layout=go.Layout(
-                    title='Disease Similarity Network',
-                    titlefont_size=20,
+                    title=dict(text='Disease Similarity Network', font=dict(size=20)),
                     showlegend=False,
                     hovermode='closest',
                     margin=dict(b=20, l=5, r=5, t=40),
                     xaxis=dict(showgrid=False, zeroline=False, showticklabels=False),
                     yaxis=dict(showgrid=False, zeroline=False, showticklabels=False),
                     height=750
-                ))
+))
 
 # df = pd.read_csv(csv_url, index_col=0)
 
