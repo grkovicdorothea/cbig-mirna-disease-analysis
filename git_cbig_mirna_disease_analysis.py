@@ -315,6 +315,8 @@ fig = go.Figure(data=[edge_trace, node_trace],
                     height=750
 ))
 
+st.plotly_chart(fig, use_container_width=True)
+
 # df = pd.read_csv(csv_url, index_col=0)
 
 # st.title("Disease Similarity Network")
