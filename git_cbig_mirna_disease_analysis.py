@@ -202,17 +202,18 @@ with tab2:
     label_to_disease = {get_disease_label(d): d for d in diseases}
     
     # 1. Keyword-based automatic selection
+    # Auto keyword match and selection
     st.markdown("#### Filter Diseases by Keyword")
     search_text = st.text_input("Type a keyword (e.g., lymphoma, cancer)")
 
-    # Automatically select all matching diseases
+# Automatically select all matching diseases
     if search_text:
         selected_display_labels = [lbl for lbl in all_labeled_diseases if search_text.lower() in lbl.lower()]
         st.success(f"Found {len(selected_display_labels)} diseases matching '{search_text}'")
     else:
         selected_display_labels = []
 
-    # (Optional) Show what was selected
+# Optional: Display the matched disease list
     if selected_display_labels:
         st.markdown("**Matched Diseases:**")
         st.write(selected_display_labels)
