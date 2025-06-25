@@ -49,12 +49,12 @@ tab_intro, tab1, tab2 = st.tabs(["Introduction", "Clustering View", "Similarity 
 with tab_intro:
     st.title("Exploring Disease Similarity Through miRNA Profiles and Jaccard Index")
     st.markdown("""
-In this analysis, we investigate disease-disease relationships based on [Jaccard Index similarity](https://en.wikipedia.org/wiki/Jaccard_index), a metric commonly used to quantify the overlap between two sets. Here, the sets are defined by shared microRNAs (miRNAs) associated with each disease.
+In this analysis, we investigate disease-disease relationships based on [Jaccard Index similarity](https://en.wikipedia.org/wiki/Jaccard_index), a metric commonly used to quantify the overlap between two sets. Here, the sets are defined by shared [microRNAs (miRNAs)](https://en.wikipedia.org/wiki/MicroRNA) associated with each disease.
 
 We construct a disease similarity matrix, where each cell represents the Jaccard similarity between a pair of diseases. To explore and interpret these relationships, we apply a combination of dimensionality reduction, clustering, and network analysis techniques:
-- **Dimensionality Reduction:** We use [t-SNE](https://en.wikipedia.org/wiki/T-distributed_stochastic_neighbor_embedding) to project the high-dimensional similarity space into two dimensions, preserving the local structure for visualization.
-- **Clustering Algorithms:** Techniques such as [K-Means](https://en.wikipedia.org/wiki/K-means_clustering), [Birch](https://scikit-learn.org/stable/modules/generated/sklearn.cluster.Birch.html), [Hierarchical Clustering](https://en.wikipedia.org/wiki/Hierarchical_clustering), [Gaussian Mixture Models](https://en.wikipedia.org/wiki/Mixture_model), [Mean Shift](https://en.wikipedia.org/wiki/Mean_shift), and [Affinity Propagation](https://en.wikipedia.org/wiki/Affinity_propagation) help us uncover clusters of related diseases. For each cluster, we visualize internal similarity patterns through heatmaps.
-- **Network Theory:** We build an interactive similarity network where nodes represent diseases and edges denote significant similarity scores. This visualization helps reveal hubs, communities, and tightly linked subgroups of diseases.
+- **Dimensionality Reduction:** We use [t-SNE](https://en.wikipedia.org/wiki/T-distributed_stochastic_neighbor_embedding) to project the high-dimensional similarity space into two dimensions.
+- **Clustering Algorithms:** Techniques such as [K-Means](https://en.wikipedia.org/wiki/K-means_clustering), [Birch](https://scikit-learn.org/stable/modules/generated/sklearn.cluster.Birch.html), [Hierarchical Clustering](https://en.wikipedia.org/wiki/Hierarchical_clustering), [Gaussian Mixture Models](https://en.wikipedia.org/wiki/Mixture_model), [Mean Shift](https://en.wikipedia.org/wiki/Mean_shift), and [Affinity Propagation](https://en.wikipedia.org/wiki/Affinity_propagation) help uncover clusters of related diseases.
+- **[Network Theory](https://en.wikipedia.org/wiki/Network_theory):** We build an interactive [similarity network](https://en.wikipedia.org/wiki/Similarity_network) where nodes represent diseases and edges denote similarity scores.
 
 This tool enables you to:
 - Perform clustering of diseases using multiple algorithms  
@@ -63,7 +63,6 @@ This tool enables you to:
 
 Use the tabs above to navigate between clustering results, similarity networks, and detailed statistics.
 """, unsafe_allow_html=True)
-
 # --------------
 # TAB 1: Clustering View
 # --------------
