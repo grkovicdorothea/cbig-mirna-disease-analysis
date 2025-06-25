@@ -224,7 +224,28 @@ with tab2:
             if i < j:
                 weight = df_subset.loc[disease1, disease2]
                 if weight >= threshold:
-                    edge_width = (weight ** 3) * 9000000
+                    # Define width by similarity range
+                    if weight < 0.1:
+                        edge_width = 1
+                    elif weight < 0.2:
+                        edge_width = 2
+                    elif weight < 0.3:
+                        edge_width = 3
+                    elif weight < 0.4:
+                        edge_width = 4
+                    elif weight < 0.5:
+                        edge_width = 5
+                    elif weight < 0.6:
+                        edge_width = 6
+                    elif weight < 0.7:
+                        edge_width = 7
+                    elif weight < 0.8:
+                        edge_width = 8
+                    elif weight < 0.9:
+                        edge_width = 9
+                    else:
+                        edge_width = 10
+
                     G.add_edge(
                         disease1, disease2,
                         weight=weight,
