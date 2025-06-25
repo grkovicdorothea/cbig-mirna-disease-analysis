@@ -267,6 +267,18 @@ with tab2:
         # Inject zoom & fullscreen buttons with styling
     extra_buttons = """
     <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const fsBtn = document.getElementById("fs-toggle");
+
+            document.addEventListener("fullscreenchange", () => {
+                if (document.fullscreenElement) {
+                    fsBtn.innerText = "Exit Fullscreen";
+                } else {
+                    fsBtn.innerText = "Fullscreen";
+                }
+            });
+        });
+
         function zoomIn() {
             const network = window.network;
             if (network) {
@@ -284,7 +296,7 @@ with tab2:
         }
 
         function toggleFullscreen() {
-            var el = document.getElementById("mynetwork");
+            var el = document.getElementById("mynetwork").parentNode;
             if (!document.fullscreenElement) {
                 el.requestFullscreen().catch(err => {
                     alert(`Error attempting to enable fullscreen: ${err.message}`);
@@ -292,6 +304,18 @@ with tab2:
             } else {
                 document.exitFullscreen();
             }
+        }
+
+        function downloadPNG() {
+            const canvas = document.querySelector("canvas");
+            if (!canvas) {
+                alert("Canvas not found.");
+                return;
+            }
+            const link = document.createElement("a");
+            link.href = canvas.toDataURL("image/png");
+            link.download = "network_graph.png";
+            link.click();
         }
     </script>
 
@@ -318,9 +342,11 @@ with tab2:
     <div style="margin: 12px 0;">
         <button onclick="zoomIn()">Zoom In</button>
         <button onclick="zoomOut()">Zoom Out</button>
-        <button onclick="toggleFullscreen()">Fullscreen</button>
+        <button id="fs-toggle" onclick="toggleFullscreen()">Fullscreen</button>
+        <button onclick="downloadPNG()">Download PNG</button>
     </div>
     """
+
 
     components.html(extra_buttons + html_content, height=780, scrolling=True)
 
