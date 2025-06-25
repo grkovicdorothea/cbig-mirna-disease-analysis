@@ -59,7 +59,7 @@ with tab1:
     st.subheader("Clustering-based Visualization of Diseases")
 
     # Reduce dimensionality to 2D for visualization using t-SNE on the distance matrix
-    tsne = TSNE(metric='precomputed', perplexity=30, random_state=42)
+    tsne = TSNE(metric='precomputed', perplexity=30, init='random', random_state=42)
     X_embedded = tsne.fit_transform(distance_matrix)
 
     # ------------------------
