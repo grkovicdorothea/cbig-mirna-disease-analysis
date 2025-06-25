@@ -224,25 +224,25 @@ with tab2:
                 if weight >= threshold:
                     # Define width by similarity range
                     if weight < 0.1:
-                        edge_width = 1
+                        edge_width = 0.5
                     elif weight < 0.2:
                         edge_width = 5
                     elif weight < 0.3:
-                        edge_width = 10
-                    elif weight < 0.4:
                         edge_width = 20
-                    elif weight < 0.5:
-                        edge_width = 30
-                    elif weight < 0.6:
-                        edge_width = 40
-                    elif weight < 0.7:
+                    elif weight < 0.4:
                         edge_width = 50
-                    elif weight < 0.8:
-                        edge_width = 60
-                    elif weight < 0.9:
-                        edge_width = 80
-                    else:
+                    elif weight < 0.5:
                         edge_width = 100
+                    elif weight < 0.6:
+                        edge_width = 200
+                    elif weight < 0.7:
+                        edge_width = 400
+                    elif weight < 0.8:
+                        edge_width = 700
+                    elif weight < 0.9:
+                        edge_width = 1200
+                    else:
+                        edge_width = 2000
 
                     G.add_edge(
                         disease1, disease2,
