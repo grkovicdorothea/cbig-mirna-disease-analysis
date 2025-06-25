@@ -201,10 +201,21 @@ with tab2:
     all_labeled_diseases = [get_disease_label(d) for d in diseases]
     label_to_disease = {get_disease_label(d): d for d in diseases}
     
-    search_text = st.text_input("Filter diseases by keyword (e.g., lymphoma, cancer, etc.)")
-    filtered_options = [lbl for lbl in all_labeled_diseases if search_text.lower() in lbl.lower()]
-    selected_display_labels = st.multiselect("Select diseases to include", options=filtered_options)
+    # 1. Keyword-based automatic selection
+    st.markdown("#### Filter Diseases by Keyword")
+    search_text = st.text_input("Type a keyword (e.g., lymphoma, cancer)")
 
+    # Automatically select all matching diseases
+    if search_text:
+        selected_display_labels = [lbl for lbl in all_labeled_diseases if search_text.lower() in lbl.lower()]
+        st.success(f"Found {len(selected_display_labels)} diseases matching '{search_text}'")
+    else:
+        selected_display_labels = []
+
+    # (Optional) Show what was selected
+    if selected_display_labels:
+        st.markdown("**Matched Diseases:**")
+        st.write(selected_display_labels)
 
     if not selected_display_labels:
         max_nodes = st.slider("No selection made. Showing top N most connected diseases", 10, min(len(jcmat), 100), 30)
