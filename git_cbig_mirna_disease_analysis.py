@@ -28,7 +28,7 @@ mapping_df = pd.read_csv(mesh_csv_url)
 id_to_names = mapping_df.groupby("disease_mesh_id")["disease_mesh_name"].apply(lambda x: list(set(", ".join(x).split(", ")))).to_dict()
 names_to_id = mapping_df.groupby("disease_mesh_name")["disease_mesh_id"].apply(lambda x: list(set(x))).to_dict()
 
-def get_disease_label(mesh_id)
+def get_disease_label(mesh_id):
     names = id_to_names.get(mesh_id, ["Unknown"])
     return f"{mesh_id} — {', '.join(names)}"
 
