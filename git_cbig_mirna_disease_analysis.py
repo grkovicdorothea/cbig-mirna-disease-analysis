@@ -228,23 +228,23 @@ with tab2:
                     if weight < 0.1:
                         edge_width = 1
                     elif weight < 0.2:
-                        edge_width = 2
-                    elif weight < 0.3:
-                        edge_width = 3
-                    elif weight < 0.4:
-                        edge_width = 4
-                    elif weight < 0.5:
                         edge_width = 5
-                    elif weight < 0.6:
-                        edge_width = 6
-                    elif weight < 0.7:
-                        edge_width = 7
-                    elif weight < 0.8:
-                        edge_width = 8
-                    elif weight < 0.9:
-                        edge_width = 9
-                    else:
+                    elif weight < 0.3:
                         edge_width = 10
+                    elif weight < 0.4:
+                        edge_width = 20
+                    elif weight < 0.5:
+                        edge_width = 30
+                    elif weight < 0.6:
+                        edge_width = 40
+                    elif weight < 0.7:
+                        edge_width = 50
+                    elif weight < 0.8:
+                        edge_width = 60
+                    elif weight < 0.9:
+                        edge_width = 80
+                    else:
+                        edge_width = 100
 
                     G.add_edge(
                         disease1, disease2,
