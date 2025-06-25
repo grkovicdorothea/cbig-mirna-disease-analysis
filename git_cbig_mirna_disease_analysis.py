@@ -203,7 +203,7 @@ with tab2:
             if i < j:
                 weight = df_subset.loc[disease1, disease2]
                 if weight >= threshold:
-                    edge_width = (weight ** 3) * 9000
+                    edge_width = (weight ** 3) * 9000000
                     G.add_edge(
                         disease1, disease2,
                         weight=weight,
