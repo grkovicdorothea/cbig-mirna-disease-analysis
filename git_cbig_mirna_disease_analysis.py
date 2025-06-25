@@ -13,7 +13,7 @@ import networkx as nx
 from pyvis.network import Network
 import streamlit.components.v1 as components
 
-file_id = "1qzP5GkOzbcJB4a0SxB09XFxdOGqMT20u"
+file_id = "1jkQzlsEzbA6Kz6I6gNlKijdKtablx2k5"
 csv_url = f"https://drive.google.com/uc?export=download&id={file_id}"
 
 jcmat = pd.read_csv(csv_url, index_col=0)
