@@ -333,33 +333,33 @@ with tab2:
     </script>
 
     <style>
-        .network-controls {
-            position: absolute;
-            top: 12px;
-            left: 12px;
-            z-index: 9999;
-            background-color: rgba(255, 255, 255, 0.9);
-            padding: 6px;
-            border-radius: 6px;
-        }
+    .network-controls {
+        position: absolute;
+        top: 12px;
+        left: 12px;
+        z-index: 9999;
+        background-color: rgba(255, 255, 255, 0.9);
+        padding: 6px;
+        border-radius: 6px;
+    }
+    
+    .network-controls button {
+        margin-right: 6px;
+        font-size: 14px;
+        padding: 6px 12px;
+        border-radius: 6px;
+        border: 1.5px solid white;
+        background-color: #69b3e7;
+        color: white;
+        font-weight: 500;
+        cursor: pointer;
+        box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);
+        transition: background-color 0.2s ease;
+    }
 
-        .network-controls button {
-            margin-right: 6px;
-            font-size: 14px;
-            padding: 6px 12px;
-            border-radius: 6px;
-            border: 1.5px solid white;
-            background-color: #007bff;
-            color: white;
-            font-weight: 500;
-            cursor: pointer;
-            box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);
-            transition: background-color 0.2s ease;
-        }
-
-        .network-controls button:hover {
-            background-color: #0056b3;
-        }
+    .network-controls button:hover {
+        background-color: #3a89c9;
+    }
     </style>
     """
 
