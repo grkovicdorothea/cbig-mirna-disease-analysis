@@ -276,16 +276,3 @@ with tab2:
 # net.save_graph("graph.html")
 # HtmlFile = open("graph.html", "r", encoding="utf-8")
 # components.html(HtmlFile.read(), height=750, scrolling=True)
-
-
-
-
-
-
-
-
-
-
-# net.save_graph("graph.html")
-# HtmlFile = open("graph.html", "r", encoding="utf-8")
-# components.html(HtmlFile.read(), height=750, scrolling=True)
