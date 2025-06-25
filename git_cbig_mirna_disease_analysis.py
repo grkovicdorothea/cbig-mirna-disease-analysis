@@ -199,32 +199,11 @@ with tab2:
     threshold = st.slider("Minimum Jaccard Similarity for Edge", 0.0, 1.0, 0.3, 0.01)
 
     all_labeled_diseases = [get_disease_label(d) for d in diseases]
-    label_to_disease = {get_disease_label(d): d for d in diseases}
-    
-    # 1. Keyword-based automatic selection
-    st.markdown("#### Filter Diseases by Keyword")
-    search_text = st.text_input("Type a keyword (e.g., lymphoma, cancer)")
+label_to_disease = {get_disease_label(d): d for d in diseases}
 
-    # Automatically select all matching diseases
-    if search_text:
-        selected_display_labels = [lbl for lbl in all_labeled_diseases if search_text.lower() in lbl.lower()]
-        st.success(f"Found {len(selected_display_labels)} diseases matching '{search_text}'")
-    else:
-        selected_display_labels = []
-
-    # (Optional) Show what was selected
-    if selected_display_labels:
-        st.markdown("**Matched Diseases:**")
-        st.write(selected_display_labels)
-
-    if not selected_display_labels:
-        max_nodes = st.slider("No selection made. Showing top N most connected diseases", 10, min(len(jcmat), 100), 30)
-        total_similarity = jcmat.sum(axis=1)
-        top_diseases = total_similarity.sort_values(ascending=False).head(max_nodes).index
-        df_subset = jcmat.loc[top_diseases, top_diseases]
-    else:
-        selected_ids = [label_to_disease[lbl] for lbl in selected_display_labels]
-        df_subset = jcmat.loc[selected_ids, selected_ids]
+search_text = st.text_input("Filter diseases by keyword (e.g., lymphoma, cancer, etc.)")
+filtered_options = [lbl for lbl in all_labeled_diseases if search_text.lower() in lbl.lower()]
+selected_display_labels = st.multiselect("Select diseases to include", options=filtered_options)
 
     G = nx.Graph()
     for disease in df_subset.index:
