@@ -23,9 +23,23 @@ diseases = jcmat.index.tolist()
 # Convert similarity matrix to distance matrix for clustering (distance = 1 - similarity)
 distance_matrix = 1 - jcmat.values
 # Load mapping of MeSH IDs to names, change this into a dtive file
-mapping_path = r'C:\Users\vikir\Downloads\New_MESH_with_names.csv'  # The CSV you created
-mapping_df = pd.read_csv(mapping_path)
-id_to_names = mapping_df.groupby("disease_mesh_id")["disease_mesh_name"].apply(lambda x: list(set(", ".join(x).split(", ")))).to_dict()
+# mapping_path = r'C:\Users\vikir\Downloads\New_MESH_with_names.csv'  # The CSV you created
+# mapping_df = pd.read_csv(mapping_path)
+# id_to_names = mapping_df.groupby("disease_mesh_id")["disease_mesh_name"].apply(lambda x: list(set(", ".join(x).split(", ")))).to_dict()
+
+# Load mapping of MeSH IDs to names from Google Drive
+mesh_file_id = "15M5Sa5fVG_BKP8ciy7U-qoks2cmNVil8"
+mesh_csv_url = f"https://drive.google.com/uc?export=download&id={mesh_file_id}"
+mapping_df = pd.read_csv(mesh_csv_url)
+
+# Clean whitespace
+mapping_df["disease_mesh_id"] = mapping_df["disease_mesh_id"].astype(str).str.strip()
+mapping_df["disease_mesh_name"] = mapping_df["disease_mesh_name"].astype(str).str.strip()
+
+# Create mapping dictionary
+id_to_names = mapping_df.groupby("disease_mesh_id")["disease_mesh_name"] \
+                        .apply(lambda x: list(set(", ".join(x).split(", ")))) \
+                        .to_dict()
 
 # Function to get display label for a MeSH ID or combined ID
 def get_disease_label(mesh_id):
