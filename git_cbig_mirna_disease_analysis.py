@@ -265,7 +265,7 @@ with tab2:
 
     # Inject zoom & PNG download buttons
         # Inject zoom & fullscreen buttons with styling
-    extra_buttons = """
+        extra_buttons = """
     <script>
         document.addEventListener("DOMContentLoaded", function () {
             const fsBtn = document.getElementById("fs-toggle");
@@ -320,7 +320,17 @@ with tab2:
     </script>
 
     <style>
-        button {
+        .network-controls {
+            position: absolute;
+            top: 12px;
+            left: 12px;
+            z-index: 9999;
+            background-color: rgba(255, 255, 255, 0.9);
+            padding: 6px;
+            border-radius: 6px;
+        }
+
+        .network-controls button {
             margin-right: 6px;
             font-size: 14px;
             padding: 6px 12px;
@@ -334,19 +344,18 @@ with tab2:
             transition: background-color 0.2s ease;
         }
 
-        button:hover {
+        .network-controls button:hover {
             background-color: #0056b3;
         }
     </style>
 
-    <div style="margin: 12px 0;">
+    <div class="network-controls">
         <button onclick="zoomIn()">Zoom In</button>
         <button onclick="zoomOut()">Zoom Out</button>
         <button id="fs-toggle" onclick="toggleFullscreen()">Fullscreen</button>
         <button onclick="downloadPNG()">Download PNG</button>
     </div>
     """
-
 
     components.html(extra_buttons + html_content, height=780, scrolling=True)
 
