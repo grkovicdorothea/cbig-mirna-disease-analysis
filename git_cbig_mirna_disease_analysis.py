@@ -272,6 +272,7 @@ with tab2:
         <div class="network-controls">
             <button onclick="zoomIn()">Zoom In</button>
             <button onclick="zoomOut()">Zoom Out</button>
+            <button onclick="resetView()">Reset View</button>
             <button id="fs-toggle" onclick="toggleFullscreen()">Fullscreen</button>
             <button onclick="downloadPNG()">Download PNG</button>
         </div>
@@ -330,6 +331,14 @@ with tab2:
             link.download = "network_graph.png";
             link.click();
         }
+        
+        function resetView() {
+            const network = window.network;
+            if (network) {
+            network.fit({ animation: true });
+        }
+    }
+
     </script>
 
     <style>
