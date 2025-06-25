@@ -20,6 +20,18 @@ jcmat = pd.read_csv(csv_url, index_col=0)
 # List of diseases in order from the similarity matrix
 diseases = jcmat.index.tolist()
 
+# Adding new mesh id and disease name table
+mesh_file_id = "15M5Sa5fVG_BKP8ciy7U-qoks2cmNVil8"
+mesh_csv_url = f"https://drive.google.com/uc?export=download&id={mesh_file_id}"
+
+mapping_df = pd.read_csv(mesh_csv_url)
+id_to_names = mapping_df.groupby("disease_mesh_id")["disease_mesh_name"].apply(lambda x: list(set(", ".join(x).split(", ")))).to_dict()
+names_to_id = mapping_df.groupby("disease_mesh_name")["disease_mesh_id"].apply(lambda x: list(set(x))).to_dict()
+
+def get_disease_label(mesh_id)
+    names = id_to_names.get(mesh_id, ["Unknown"])
+    return f"{mesh_id} — {', '.join(names)}"
+
 # Convert similarity matrix to distance matrix for clustering (distance = 1 - similarity)
 distance_matrix = 1 - jcmat.values
 # Load mapping of MeSH IDs to names, change this into a dtive file
@@ -53,7 +65,7 @@ with tab1:
     st.subheader("Clustering-based Visualization of Diseases")
 
     # Reduce dimensionality to 2D for visualization using t-SNE on the distance matrix
-    tsne = TSNE(metric='precomputed', perplexity=30, random_state=42)
+    tsne = TSNE(metric='precomputed', perplexity=30, random_state=42, init='random')
     X_embedded = tsne.fit_transform(distance_matrix)
 
     # ------------------------
@@ -98,12 +110,10 @@ with tab1:
     df = pd.DataFrame({
         "x": X_[:, 0],
         "y": X_[:, 1],
-        "cluster": yNew.astype(str),  # cast to string for categorical color mapping
+        "cluster": yNew.astype(str),
         "disease": diseases
     })
 
-    # ------------------------
-    # Interactive clustering scatter plot using Plotly
     df["label"] = df["disease"].apply(get_disease_label)
 
     color_sequence = pc.qualitative.Alphabet + pc.qualitative.Pastel + pc.qualitative.Set3
@@ -111,7 +121,14 @@ with tab1:
                      color_discrete_sequence=color_sequence, title=f"{Alg} Clustering", width=900, height=650)
     st.plotly_chart(fig, use_container_width=True)
 
-    use_cluster_selection = st.checkbox("Select Disease by Cluster", value=False)
+    # UI row with 2 toggles
+    col1, col2 = st.columns([1, 1])
+    with col1:
+        use_cluster_selection = st.checkbox("Select Disease by Cluster", value=False)
+    with col2:
+        selection_mode = st.radio("Select by:", ["MeSH ID", "Disease Name"], horizontal=True)
+
+    # Determine options based on cluster
     cluster_sizes = df['cluster'].value_counts().to_dict()
     valid_clusters = [c for c, size in cluster_sizes.items() if size >= min_cluster_size]
 
@@ -121,9 +138,15 @@ with tab1:
     else:
         options = diseases
 
-    disease_options = {get_disease_label(d): d for d in options}
-    selected_display = st.selectbox("Select a Disease", list(disease_options.keys()))
-    selected_disease = disease_options[selected_display]
+    # Build dropdown labels depending on toggle
+    if selection_mode == "MeSH ID":
+        display_options = {d: get_disease_label(d).split(" — ")[0] for d in options}
+    else:
+        display_options = {d: ", ".join(id_to_names.get(d, ["Unknown"])) for d in options}
+
+    reversed_display = {v: k for k, v in display_options.items()}
+    selected_display = st.selectbox("Select a Disease", list(reversed_display.keys()))
+    selected_disease = reversed_display[selected_display]
 
     top_n = st.slider("Top N Most Similar Diseases", 5, 50, 20)
     selected_cluster_label = df[df["disease"] == selected_disease]["cluster"].values[0]
