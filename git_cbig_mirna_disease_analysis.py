@@ -196,7 +196,7 @@ with tab1:
 # TAB 2: Disease Similarity Network
 # --------------
 with tab2:
-    st.subheader("Disease Similarity Network")
+    st.header("Disease Similarity Network")
 
     threshold = st.slider("Minimum Jaccard Similarity for Edge", 0.0, 1.0, 0.3, 0.01)
 
