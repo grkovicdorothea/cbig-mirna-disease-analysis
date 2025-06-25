@@ -260,7 +260,7 @@ with tab2:
     net.from_nx(G)
     net.repulsion(node_distance=200, central_gravity=0.3)
     for node in net.nodes:
-        node["title"] = node["label"]Add commentMore actions
+        node["title"] = node["label"]
         node["label"] = node["label"]
 
     net.save_graph("graph.html")
