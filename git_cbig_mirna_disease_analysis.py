@@ -1,10 +1,3 @@
-# Normalize weights between min and max in your matrix subset
-min_sim = df_subset.values[df_subset.values > threshold].min()
-max_sim = df_subset.values[df_subset.values > threshold].max()
-
-# Avoid divide-by-zero
-scaled_weight = (weight - min_sim) / (max_sim - min_sim + 1e-6)
-edge_width = 1 + scaled_weight * 19  # Final width range: 1 to 20
 import streamlit as st 
 import pandas as pd
 import numpy as np
