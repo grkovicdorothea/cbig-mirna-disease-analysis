@@ -198,13 +198,10 @@ with tab1:
 with tab2:
     st.subheader("Disease Similarity Network")
 
-    # Threshold slider for minimum similarity to draw an edge
     threshold = st.slider("Minimum Jaccard Similarity for Edge", 0.0, 1.0, 0.3, 0.01)
 
-    # Allow user to select diseases to include in network
     all_labeled_diseases = [get_disease_label(d) for d in diseases]
     label_to_disease = {get_disease_label(d): d for d in diseases}
-
     selected_display_labels = st.multiselect("Select diseases to include", options=all_labeled_diseases)
 
     if not selected_display_labels:
@@ -216,8 +213,6 @@ with tab2:
         selected_ids = [label_to_disease[lbl] for lbl in selected_display_labels]
         df_subset = jcmat.loc[selected_ids, selected_ids]
 
-
-    # Build network graph with NetworkX
     G = nx.Graph()
     for disease in df_subset.index:
         G.add_node(disease, label=get_disease_label(disease))
@@ -227,7 +222,6 @@ with tab2:
             if i < j:
                 weight = df_subset.loc[disease1, disease2]
                 if weight >= threshold:
-                    # Define width by similarity range
                     if weight < 0.1:
                         edge_width = 0.5
                     elif weight < 0.2:
@@ -259,13 +253,50 @@ with tab2:
     net = Network(height="700px", width="100%", bgcolor="#ffffff", font_color="black")
     net.from_nx(G)
     net.repulsion(node_distance=200, central_gravity=0.3)
+
     for node in net.nodes:
         node["title"] = node["label"]
         node["label"] = node["label"]
 
     net.save_graph("graph.html")
-    HtmlFile = open("graph.html", "r", encoding="utf-8")
-    components.html(HtmlFile.read(), height=750, scrolling=True)
+
+    with open("graph.html", "r", encoding="utf-8") as f:
+        html_content = f.read()
+
+    # Inject zoom & PNG download buttons
+    extra_buttons = """
+    <div style="position: fixed; top: 10px; left: 10px; z-index: 9999;">
+        <button onclick="zoomIn()">+</button>
+        <button onclick="zoomOut()">-</button>
+        <button onclick="downloadPNG()">Download PNG</button>
+    </div>
+    <script>
+    let scale = 1.0;
+    function zoomIn() {
+        scale += 0.1;
+        document.getElementById('mynetwork').style.transform = 'scale(' + scale + ')';
+        document.getElementById('mynetwork').style.transformOrigin = '0 0';
+    }
+    function zoomOut() {
+        scale = Math.max(0.1, scale - 0.1);
+        document.getElementById('mynetwork').style.transform = 'scale(' + scale + ')';
+        document.getElementById('mynetwork').style.transformOrigin = '0 0';
+    }
+    function downloadPNG() {
+        var networkContainer = document.getElementById("mynetwork").children[0];
+        html2canvas(networkContainer).then(function(canvas) {
+            var link = document.createElement("a");
+            link.download = "disease_similarity_network.png";
+            link.href = canvas.toDataURL();
+            link.click();
+        });
+    }
+    </script>
+    <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+    """
+    html_content = html_content.replace("</body>", extra_buttons + "</body>")
+
+    components.html(html_content, height=750, scrolling=True)
 
 # df = pd.read_csv(csv_url, index_col=0)
 
