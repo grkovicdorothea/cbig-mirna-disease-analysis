@@ -166,10 +166,8 @@ with tab1:
 
     st.subheader(f"Heatmap: Internal Similarities Among Top {top_n} Similar Diseases")
     heatmap_data_2 = jcmat.loc[top_similar.index, top_similar.index]
-    fig2, ax2 = plt.subplots(figsize=(10, 8))
-    sns.heatmap(heatmap_data_2, cmap="viridis", annot=False, xticklabels=True, yticklabels=True, ax=ax2)
-    plt.xticks(rotation=90)
-    st.pyplot(fig2)
+    g2 = sns.clustermap(heatmap_data_2, cmap="viridis", figsize=(10, 8))
+    st.pyplot(g2.fig)
 
     st.subheader(f"Heatmap: Similarities Within Selected Cluster (Cluster {selected_cluster_label})")
     cluster_heatmap_data = jcmat.loc[cluster_members, cluster_members]
